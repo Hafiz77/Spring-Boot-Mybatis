@@ -1,3 +1,4 @@
 /.idea
 MybatisTest.iml
-
+target/
+*.calss
