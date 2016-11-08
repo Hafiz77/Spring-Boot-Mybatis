@@ -22,11 +22,12 @@ public class SampleMapperApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println(this.cityMapper.findByState("CA"));
+        System.out.println(cityMapper.findByState("CA"));
         City city = new City();
-        city.setName("Mohammad");
-        city.setState("DHAKA");
+        city.setName("MKKMM");
+        city.setState("DT");
         city.setCountry("BD");
-        System.out.println(this.cityMapper.insertCity(city));
+        System.out.println(cityMapper.insertCity(city));
+
     }
 }

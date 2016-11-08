@@ -77,10 +77,15 @@ public class ConnectionFactory {
          * @throws SQLException
          */
         public static int insert(String insertQuery) throws SQLException {
+            PreparedStatement pstmt;
+            pstmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            pstmt.executeUpdate();
+            ResultSet keys = pstmt.getGeneratedKeys();
+            keys.next();
+            int result = keys.getInt(1);
             statement = db.conn.createStatement();
-            int result = statement.executeUpdate(insertQuery);
+           // int result = statement.executeUpdate(insertQuery);
             return result;
-
         }
 
 
