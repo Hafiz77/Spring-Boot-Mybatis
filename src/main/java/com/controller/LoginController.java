@@ -6,47 +6,78 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import java.text.DateFormat;
+
 import java.util.LinkedHashMap;
+
 
 /**
  * Created by Hafiz on 11/8/2016.
  */
 @Controller
-@Path("/login")
+@Path("/")
 public class LoginController {
     static final Logger logger = LoggerFactory.getLogger(UserController.class);
     private static Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private HttpSession httpSession;
 
     @POST
     @Produces("application/json")
-    public Response login(@HeaderParam("email") String email, @HeaderParam("password") String password) {
-        LinkedHashMap<String, Object> response = new LinkedHashMap<String, Object>();
+    @Path("/login")
+    public Response login(User requestUser, @Context HttpServletRequest request) {
+        LinkedHashMap<String, Object> loginResponse = new LinkedHashMap<String, Object>();
+        DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
 
         try {
-            User user = userMapper.login(email,password);
+            User user = userMapper.login(requestUser.getEmail(), requestUser.getPassword());
 
             if (user == null) {
-                response.put("msg", "Invalid User");
+                loginResponse.put("msg", "Invalid User");
             } else {
-                response.put("msg", "Login Success");
-                response.put("user", user);
+                httpSession = request.getSession();
+                httpSession.setAttribute("user", user);
+                httpSession.setMaxInactiveInterval(2 * 15);
+
+                loginResponse.put("msg", "Login Success");
+                loginResponse.put("sessionCreate", formatter.format(httpSession.getCreationTime()));
+                loginResponse.put("lastAccess", formatter.format(httpSession.getLastAccessedTime()));
+                loginResponse.put("InactiveTimeOut", httpSession.getMaxInactiveInterval());
+                loginResponse.put("loggedInUser", httpSession.getAttribute("user"));
+
             }
-            return Response.status(Response.Status.OK).entity(response).build();
+            return Response.status(Response.Status.OK).entity(loginResponse).build();
         } catch (Exception ex) {
-            response.put("user", "Not Found");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
+            loginResponse.put("user", "Not Found");
+            return Response.status(Response.Status.BAD_REQUEST).entity(loginResponse).build();
+        }
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("/logout")
+    public Response logout(@Context HttpServletRequest request) {
+        LinkedHashMap<String, Object> loginResponse = new LinkedHashMap<String, Object>();
+        try {
+            httpSession = request.getSession();
+            httpSession.invalidate();
+            loginResponse.put("msg", "Logout Success");
+            return Response.status(Response.Status.OK).entity(loginResponse).build();
+        } catch (Exception ex) {
+            loginResponse.put("user", "Not Found");
+            return Response.status(Response.Status.BAD_REQUEST).entity(loginResponse).build();
         }
     }
 
