@@ -58,10 +58,14 @@ public class LoginController {
                 loginResponse.put("loggedInUser", httpSession.getAttribute("user"));
 
             }
-            return Response.status(Response.Status.OK).entity(loginResponse).build();
+            return Response.status(Response.Status.OK).entity(loginResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         } catch (Exception ex) {
             loginResponse.put("user", "Not Found");
-            return Response.status(Response.Status.BAD_REQUEST).entity(loginResponse).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(loginResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         }
     }
 
@@ -74,10 +78,14 @@ public class LoginController {
             httpSession = request.getSession();
             httpSession.invalidate();
             loginResponse.put("msg", "Logout Success");
-            return Response.status(Response.Status.OK).entity(loginResponse).build();
+            return Response.status(Response.Status.OK).entity(loginResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         } catch (Exception ex) {
             loginResponse.put("user", "Not Found");
-            return Response.status(Response.Status.BAD_REQUEST).entity(loginResponse).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(loginResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         }
     }
 

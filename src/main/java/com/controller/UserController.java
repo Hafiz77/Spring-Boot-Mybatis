@@ -55,17 +55,25 @@ public class UserController {
                         serviceResponse.put("created_msg", "Successfully created User");
                     }
                 }
-                return Response.status(Response.Status.OK).entity(serviceResponse).build();
+                return Response.status(Response.Status.OK).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                        .allow("OPTIONS").build();
             } else {
                 logger.info("Failed to create a user due to field validation errors.");
                 logger.debug("Unable to create a user due to validation errors using {}", user);
                 //JSONObject jsonObj = new JSONObject(validateErrors.toString());
                 serviceResponse.put("error", validateErrors.toString());
-                return Response.status(400).entity(serviceResponse).build();
+                return Response.status(400).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                        .allow("OPTIONS").build();
+
+
             }
         } catch (Exception e) {
             logger.debug("<< create()");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         }
     }
 
@@ -84,11 +92,15 @@ public class UserController {
                 response.put("total", listUsers.size());
                 response.put("users", listUsers);
             }
-            return Response.status(Response.Status.OK).entity(response).build();
+            return Response.status(Response.Status.OK).entity(response).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         } catch (Exception ex) {
 
             response.put("user", "Not Found");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(response).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         }
     }
 
@@ -120,17 +132,23 @@ public class UserController {
                         }
                     }
                 }
-                return Response.status(Response.Status.OK).entity(serviceResponse).build();
+                return Response.status(Response.Status.OK).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                        .allow("OPTIONS").build();
             } else {
                 logger.info("Failed to update a user due to field validation errors.");
                // logger.debug("Unable to update a user due to validation errors using {}", personJson);
                 serviceResponse.put("error", validateErrors.toString());
 
-                return Response.status(400).entity(serviceResponse).build();
+                return Response.status(400).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                        .allow("OPTIONS").build();
             }
         } catch (Exception e) {
             logger.debug("<< create()");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         }
     }
 
@@ -149,11 +167,15 @@ public class UserController {
             } else {
                 response.put("user", user);
             }
-            return Response.status(Response.Status.OK).entity(response).build();
+            return Response.status(Response.Status.OK).entity(response).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         } catch (Exception ex) {
 
             response.put("user", "Not Found");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(response).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         }
     }
 
@@ -175,12 +197,16 @@ public class UserController {
                 logger.info("Successfully delete user.");
                 serviceResponse.put("delete", "Successfully delete user.");
             }
-            return Response.status(Response.Status.OK).entity(serviceResponse).build();
+            return Response.status(Response.Status.OK).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
 
         } catch (Exception e) {
 
             logger.debug("<< create()");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
+                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
+                    .allow("OPTIONS").build();
         }
     }
 
