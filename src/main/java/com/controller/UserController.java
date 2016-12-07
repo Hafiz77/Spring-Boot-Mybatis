@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -22,6 +23,7 @@ import java.util.Set;
 /**
  * Created by Hafiz on 11/8/2016.
  */
+//@CrossOrigin(origins = "http://localhost:8888", maxAge = 3600)
 @Controller
 @Path("/users")
 public class UserController {
@@ -55,28 +57,21 @@ public class UserController {
                         serviceResponse.put("created_msg", "Successfully created User");
                     }
                 }
-                return Response.status(Response.Status.OK).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                        .allow("OPTIONS").build();
+                return Response.status(Response.Status.CREATED).entity(serviceResponse).build();
             } else {
                 logger.info("Failed to create a user due to field validation errors.");
                 logger.debug("Unable to create a user due to validation errors using {}", user);
                 //JSONObject jsonObj = new JSONObject(validateErrors.toString());
                 serviceResponse.put("error", validateErrors.toString());
-                return Response.status(400).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                        .allow("OPTIONS").build();
+                return Response.status(400).entity(serviceResponse).build();
 
 
             }
         } catch (Exception e) {
             logger.debug("<< create()");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
     }
-
 
 
     @GET
@@ -92,22 +87,18 @@ public class UserController {
                 response.put("total", listUsers.size());
                 response.put("users", listUsers);
             }
-            return Response.status(Response.Status.OK).entity(response).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.OK).entity(listUsers).build();
         } catch (Exception ex) {
 
             response.put("user", "Not Found");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
         }
     }
 
     @PUT
     @Path("/{id}")
     @Produces("application/json")
-    public Response updateUser(@PathParam("id") Integer id,User user) {
+    public Response updateUser(@PathParam("id") Integer id, User user) {
         //String personJson = gson.toJson(user);
         //logger.debug(">> create({})", personJson);
         //LinkedHashMap<Object, Object> apiResponse = new LinkedHashMap<>();
@@ -117,12 +108,12 @@ public class UserController {
         try {
             Set<ConstraintViolation<User>> validateErrors = validator.validate(user);
             if (validateErrors.isEmpty()) {
-                if (userMapper.findById(id)==null){
+                if (userMapper.findById(id) == null) {
                     serviceResponse.put("msg", "User Not Found");
-                }else{
-                    if (userMapper.findByEmailNotUser(user.getEmail(),user.getId()) != null) {
+                } else {
+                    if (userMapper.findByEmailNotUser(user.getEmail(), user.getId()) != null) {
                         serviceResponse.put("duplicate_Email", "user already exist");
-                    }else{
+                    } else {
                         int updateUser = userMapper.updateUser(user);
                         if (updateUser == 0) {
                             serviceResponse.put("created", "unable to update User");
@@ -132,23 +123,17 @@ public class UserController {
                         }
                     }
                 }
-                return Response.status(Response.Status.OK).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                        .allow("OPTIONS").build();
+                return Response.status(Response.Status.OK).entity(user).build();
             } else {
                 logger.info("Failed to update a user due to field validation errors.");
-               // logger.debug("Unable to update a user due to validation errors using {}", personJson);
+                // logger.debug("Unable to update a user due to validation errors using {}", personJson);
                 serviceResponse.put("error", validateErrors.toString());
 
-                return Response.status(400).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                        .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                        .allow("OPTIONS").build();
+                return Response.status(400).entity(serviceResponse).build();
             }
         } catch (Exception e) {
             logger.debug("<< create()");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
     }
 
@@ -167,15 +152,11 @@ public class UserController {
             } else {
                 response.put("user", user);
             }
-            return Response.status(Response.Status.OK).entity(response).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.OK).entity(user).build();
         } catch (Exception ex) {
 
             response.put("user", "Not Found");
-            return Response.status(Response.Status.BAD_REQUEST).entity(response).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.BAD_REQUEST).entity(response).build();
         }
     }
 
@@ -197,16 +178,12 @@ public class UserController {
                 logger.info("Successfully delete user.");
                 serviceResponse.put("delete", "Successfully delete user.");
             }
-            return Response.status(Response.Status.OK).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.OK).entity(serviceResponse).build();
 
         } catch (Exception e) {
 
             logger.debug("<< create()");
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).header("Access-Control-Allow-Origin", "*")
-                    .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                    .allow("OPTIONS").build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(serviceResponse).build();
         }
     }
 

@@ -2,3 +2,5 @@
 MybatisTest.iml
 target/
 *.calss
+**/node_modules/*
+npm-debug.log

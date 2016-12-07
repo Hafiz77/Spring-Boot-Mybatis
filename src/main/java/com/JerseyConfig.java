@@ -1,5 +1,6 @@
 package com;
 
+import com.controller.CORSResponseFilter;
 import com.controller.LoginController;
 import com.controller.UserController;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -15,6 +16,7 @@ import javax.ws.rs.ApplicationPath;
 public class JerseyConfig extends ResourceConfig {
     public JerseyConfig() {
         //register(TestController.class);
+        register(CORSResponseFilter.class);
         register(UserController.class);
         register(LoginController.class);
 

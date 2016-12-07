@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" ng-app="userApp">
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <base href="/">
+    <!--  <link rel="stylesheet" href="assets/css/bootstrapFlatly/bootstrap.css"> -->
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        .navbar {
+            border-radius: 0;
+        }
+
+        .activeState {
+            background-color: #ccc;
+            color: white
+        }
+    </style>
+</head>
+<title>UserInfo</title>
+
+<body>
+    <!-- NAVIGATION -->
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" ui-sref="users">User Information</a>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+
+        <!-- THIS IS WHERE WE WILL INJECT OUR CONTENT ============================== -->
+        <div ui-view></div>
+
+    </div>
+</body>
+
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/node_modules/angular/angular.min.js"></script>
+<script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="/node_modules/angular-resource/angular-resource.min.js"></script>
+
+<script src="/app/app.config.js"></script>
+<script src="/app/users/user.router.js"></script>
+<script src="/app/users/user.service.js"></script>
+<script src="/app/users/controllers/userCreate.controller.js"></script>
+<script src="/app/users/controllers/userList.controller.js"></script>
+<script src="/app/users/controllers/userEdit.controller.js"></script>
+<script src="/app/users/controllers/userView.controller.js"></script>
+
+
+
+</html>
